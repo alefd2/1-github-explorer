@@ -4,10 +4,11 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
+const isDevelopment = process.env.NODE_ENV !== 'production';
 module.exports = {
 
-    mode: 'development',
-    devtool: 'eval-source-map',
+    mode: isDevelopment ? 'development' : 'production' ,
+    devtool: isDevelopment ? 'eval-source-map' : 'sorce-map',
     //arquivo de entrada 
     entry: path.resolve(__dirname, 'src', 'index.jsx'),
     //arquivo de saída
@@ -19,6 +20,7 @@ module.exports = {
         extensions: ['.js' , '.jsx'],
     },
     devServer: {
+        // contentBase: path.resolve(__dirname, 'public')
         static: {
             directory: path.join(__dirname, 'public')
           },
@@ -43,6 +45,11 @@ module.exports = {
               exclude: /node_modules/,
               //converte com o babel
               use: 'babel-loader',
+            },
+            {
+                test: /\.css$/,
+                exclude: /node_modules/,
+                use: ['style-loader','css-loader'],
             }
         ]
     }
